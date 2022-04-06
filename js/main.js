@@ -34,9 +34,9 @@ function editarUsuario(indice){
 function armarTabla(){
     let table = '';
     if(usuarios.length > 0 ){
-        for (const [indice, usuario] of usuarios.entries()) {
+        usuarios.map((usuario, indice) => {
             table += `
-            <tr>
+            <tr class="usuarioCargado">
                 <td>${usuario.usuario}</td>
                 <td>${usuario.nombre}</td>
                 <td>${usuario.email}</td>
@@ -46,7 +46,7 @@ function armarTabla(){
                     <a href="#" onClick="eliminarUsuario(${indice})">Eliminar</a>
                 </td>
             </tr>`;
-        }
+        });
     }
     else {
         table += `
@@ -58,7 +58,6 @@ function armarTabla(){
         `;
     }
     document.getElementById('datosUsuarios').innerHTML = table;
-    console.log(usuarios);
 }
 
 // Evento al hacer click en nuevo usuario
@@ -89,7 +88,6 @@ document.getElementById('guardarUsuario').addEventListener('click', function(){
     let email = document.getElementById('inputEmail').value;
     let edad = document.getElementById('inputEdad').value;
     let accionUsuario = document.getElementById('accionUsuario').value;
-    console.log(accionUsuario);
     if(accionUsuario == 'nuevo'){
         usuarios.push(new Usuario(usuario, nombre, email,edad))
         mensajeAlert = '¡Usuario creado correctamente!';
@@ -108,6 +106,43 @@ document.getElementById('guardarUsuario').addEventListener('click', function(){
     myModal.hide();
 });
 
+
+// Evento al escribir en el buscador
+document.getElementById('inputBuscar').addEventListener('keyup', function(){
+    // Texto del campo
+    let textoBuscar = document.getElementById('inputBuscar').value;
+    if(textoBuscar){
+        textoBuscar = textoBuscar.toLowerCase().trim();
+    }
+    // las filas de la tabla
+    const listadoTabla = document.getElementsByClassName('usuarioCargado');
+    let encontrado = 0 ;
+    for(const tr of listadoTabla){
+        let texto = tr.innerHTML.toLowerCase().trim();
+        if(texto.indexOf(textoBuscar) > -1){
+            tr.style.display = "";
+            encontrado++;
+        }
+        else {
+            tr.style.display = "none";
+        }
+    };
+    if(encontrado == 0){
+        if(!document.getElementById('noExistentes') && listadoTabla.length > 0){
+            table = `
+            <tr id="noExistentes">
+                <td colspan="5" class="text-center">
+                    <span class="text-black">No se encontraron coincidencias</span>
+                </td>
+            </tr>
+            `;
+            document.getElementById('datosUsuarios').innerHTML += table;
+        }
+    }
+    else {
+        document.getElementById('noExistentes').remove();
+    }
+});
 // Cada vez que se cierra el modal se eliminan los datos del mismo
 modalUsuario = document.getElementById('modalUsuario')
 modalUsuario.addEventListener('hidden.bs.modal',function(event){
