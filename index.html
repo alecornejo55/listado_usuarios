@@ -1,12 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entregable 1</title>
-</head>
-<body>
-    <script src="main.js"></script>
-</body>
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic|Merriweather:300,400italic,300italic,400,700italic' rel='stylesheet' type='text/css'>
+	
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	</head>
+	<body>
+        <main class="container">
+            <div class="card">
+                <div class="card-header">
+                    Listado de usuarios
+                    <a href="#" id="nuevoUsuario" class="float-end">Agregar nuevo usuario</a>
+                </div>
+                <div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover">
+							<thead>
+								<th width="25%">Usuario</th>
+								<th width="25%">Nombre</th>
+								<th width="20%">Email</th>
+								<th width="15%">Edad</th>
+								<th width="15%">Acciones</th>
+							</thead>
+							<tbody id="datosUsuarios">
+							</tbody>
+						</table>
+					</div>
+                </div>
+            </div>
+			<!-- Modal -->
+			<div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalUsuarioLabel">Agregar nuevo usuario</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="#" id="formUsuario">
+							<input type="hidden" id="accionUsuario">
+							<input type="hidden" id="indiceUsuario">
+							<div>
+								<label for="inputUsuario" class="form-label">Nombre de usuario (*)</label>
+								<input type="text" class="form-control" id="inputUsuario" placeholder="Mi usuario">
+							</div>
+							<div>
+								<label for="inputNombre" class="form-label">Nombre (*)</label>
+								<input type="email" class="form-control" id="inputNombre" placeholder="Alex">
+							</div>
+							<div>
+								<label for="inputEmail" class="form-label">Email (*)</label>
+								<input type="email" class="form-control" id="inputEmail" placeholder="nombre@ejemplo.com">
+							</div>
+							<div>
+								<label for="inputEdad" class="form-label">Edad (*)</label>
+								<input type="number" class="form-control" id="inputEdad" placeholder="27">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="guardarUsuario" class="btn btn-primary">Guardar</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					</div>
+				</div>
+				</div>
+			</div>
+        </main>
+		<!-- jQuery -->
+		<script src="js/jquery.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+		<!-- Main JS -->
+		<script src="js/main.js"></script>
+	</body>
 </html>
