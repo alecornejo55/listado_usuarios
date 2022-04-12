@@ -1,55 +1,58 @@
 const usuarios = [];
 // Generamos el modal
-let myModal = new bootstrap.Modal(document.getElementById('modalUsuario'));
+const myModal = new bootstrap.Modal(document.getElementById('modalUsuario'));
 class Usuario {
     constructor(usuario, nombre, email, edad){
         this.usuario = usuario;
         this.nombre = nombre;
         this.email = email;
         this.edad = edad;
+        this.id = usuarios.length + 1;
     }
 }
 
-// Función que elimina el usuario
-function eliminarUsuario(indice){
-    if(confirm(`¿Estás seguro que deseas eliminar el usuario?`)){
-        usuarios.splice(indice, 1);
-        armarTabla();
-    }
-}
-
-// Función que abre la edición de un usuario
-function editarUsuario(indice){
-    document.getElementById('modalUsuarioLabel').innerHTML = 'Editar usuario';
-    document.getElementById('inputUsuario').value=usuarios[indice].usuario;
-    document.getElementById('inputNombre').value=usuarios[indice].nombre;
-    document.getElementById('inputEmail').value=usuarios[indice].email;
-    document.getElementById('inputEdad').value=usuarios[indice].edad;
-    document.getElementById('accionUsuario').value = 'editar';
-    document.getElementById('indiceUsuario').value = indice;
-    // Abrimos el modal
-    myModal.show();
-}
 // Función que arma la tabla de los usuarios
-function armarTabla(){
-    let table = '';
+const armarTabla = (usuarios) => {
+    const table = document.getElementById('datosUsuarios');
     if(usuarios.length > 0 ){
         usuarios.map((usuario, indice) => {
-            table += `
+            table.innerHTML += `
             <tr class="usuarioCargado">
                 <td>${usuario.usuario}</td>
                 <td>${usuario.nombre}</td>
                 <td>${usuario.email}</td>
                 <td>${usuario.edad}</td>
                 <td>
-                    <a href="#" onClick="editarUsuario(${indice})">Editar</a>
-                    <a href="#" onClick="eliminarUsuario(${indice})">Eliminar</a>
+                    <a href="#" id="btnEditar${usuario.id}">Editar</a>
+                    <a href="#" id="btnEliminar${usuario.id}">Eliminar</a>
                 </td>
             </tr>`;
+            // Función que elimina el usuario
+            const btnEliminar = document.getElementById(`btnEliminar${usuario.id}`);
+            btnEliminar.addEventListener('click', () => {
+                if(confirm(`¿Estás seguro que deseas eliminar el usuario?`)){
+                    usuarios.splice(indice, 1);
+                    armarTabla(usuarios);
+                }
+            });
+
+            // Función que abre la edición de un usuario
+            const btnEditar = document.getElementById(`btnEditar${usuario.id}`);
+            btnEditar.addEventListener('click', () => {
+                document.getElementById('modalUsuarioLabel').innerHTML = 'Editar usuario';
+                document.getElementById('inputUsuario').value=usuario.usuario;
+                document.getElementById('inputNombre').value=usuario.nombre;
+                document.getElementById('inputEmail').value=usuario.email;
+                document.getElementById('inputEdad').value=usuario.edad;
+                document.getElementById('accionUsuario').value = 'editar';
+                document.getElementById('indiceUsuario').value = indice;
+                // Abrimos el modal
+                myModal.show();
+            });
         });
     }
     else {
-        table += `
+        table.innerHTML += `
         <tr>
             <td colspan="5" class="text-center">
                 <span class="text-black">No existen usuarios</span>
@@ -57,7 +60,6 @@ function armarTabla(){
         </tr>
         `;
     }
-    document.getElementById('datosUsuarios').innerHTML = table;
 }
 
 // Evento al hacer click en nuevo usuario
@@ -90,6 +92,7 @@ document.getElementById('guardarUsuario').addEventListener('click', function(){
     let accionUsuario = document.getElementById('accionUsuario').value;
     if(accionUsuario == 'nuevo'){
         usuarios.push(new Usuario(usuario, nombre, email,edad))
+        console.log(usuarios);
         mensajeAlert = '¡Usuario creado correctamente!';
     }
 
@@ -102,7 +105,7 @@ document.getElementById('guardarUsuario').addEventListener('click', function(){
         mensajeAlert = '¡Usuario guardado correctamente!';
     }
     alert(mensajeAlert);
-    armarTabla();
+    armarTabla(usuarios);
     myModal.hide();
 });
 
@@ -144,7 +147,7 @@ document.getElementById('inputBuscar').addEventListener('keyup', function(){
     }
 });
 // Cada vez que se cierra el modal se eliminan los datos del mismo
-modalUsuario = document.getElementById('modalUsuario')
+modalUsuario = document.getElementById('modalUsuario');
 modalUsuario.addEventListener('hidden.bs.modal',function(event){
     let elementos = document.getElementsByClassName('form-control');
     for(const elemento of elementos){
@@ -155,4 +158,4 @@ modalUsuario.addEventListener('hidden.bs.modal',function(event){
     document.getElementById('indiceUsuario').value = '';
 });
 // Armo la tabla la primera vez
-armarTabla();
+armarTabla(usuarios);
