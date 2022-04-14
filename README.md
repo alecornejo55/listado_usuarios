@@ -1,2 +1,2 @@
-# carrito_compras
-Simulador de carrito de compras
+# listado_usuarios
+Simulador de listado de usuarios
